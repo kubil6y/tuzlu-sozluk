@@ -1,5 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import { ThemeProvider } from "@/components/theme-provider";
 import { fontSans } from "@/components/fonts";
 import { cn } from "@/lib/utils";
 import { auth } from "@/auth";
@@ -18,14 +19,23 @@ export default async function RootLayout({
     const session = await auth();
     return (
         <SessionProvider session={session}>
-            <html lang="en">
+            <html lang="en" suppressHydrationWarning>
                 <body
                     className={cn(
                         "min-h-screen bg-background font-sans antialiased",
                         fontSans.variable
                     )}
                 >
-                    {children}
+                    <ThemeProvider
+                        attribute="class"
+                        defaultTheme="system"
+                        enableSystem
+                        disableTransitionOnChange
+                    >
+                        <div className="h-[7px] w-full bg-gradient-to-r from-rose-400 via-fuchsia-500 to-indigo-500 shadow-lg shadow-black"></div>
+
+                        {children}
+                    </ThemeProvider>
                 </body>
             </html>
         </SessionProvider>
