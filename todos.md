@@ -1,0 +1,1 @@
+- oauth provider should assign a username to user!
