@@ -3,15 +3,16 @@
 import bcyrpt from "bcryptjs";
 import { db } from "@/lib/db";
 import { action } from "@/lib/safe-action";
-import { registerSchema } from "@/schemas/user";
+import { loginSchema, registerSchema } from "@/schemas/user";
 import { redirect } from "next/navigation";
+import { getUserByEmail } from "@/data/user";
+import { signIn } from "@/auth";
+import { AuthError } from "next-auth";
 
 export const registerUser = action(
     registerSchema,
     async ({ email, username, password }) => {
-        const emailExists = await db.user.findFirst({
-            where: { email },
-        });
+        const emailExists = await getUserByEmail(email);
 
         if (emailExists) {
             return {
@@ -22,14 +23,14 @@ export const registerUser = action(
         }
 
         const usernameExists = await db.user.findFirst({
-            where: { username }
-        })
+            where: { username },
+        });
         if (usernameExists) {
             return {
                 error: {
-                    username: `Username '${username}' is already taken`
-                }
-            }
+                    username: `Username '${username}' is already taken`,
+                },
+            };
         }
         const hashedPassword = await bcyrpt.hash(password, 10);
         await db.user.create({
@@ -39,6 +40,26 @@ export const registerUser = action(
                 password: hashedPassword,
             },
         });
-        redirect("/");
+        redirect("/login");
     }
 );
+
+export const loginUser = action(loginSchema, async ({ email, password }) => {
+    try {
+        await signIn("credentials", {
+            email,
+            password,
+        });
+        redirect("/");
+    } catch (err) {
+        if (err instanceof AuthError) {
+            switch (err.type) {
+                case "CredentialsSignin":
+                    return { error: "Invalid credentials!" };
+                default:
+                    return { error: "Something went wrong!" };
+            }
+        }
+        throw err;
+    }
+});
