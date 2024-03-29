@@ -1,0 +1,33 @@
+type xxxProps = {}
+export const xxx = ({}: xxxProps) => {
+    return (
+        <div>
+            <h1>xxx</h1>
+        </div>
+    )
+}
+
+--------------- PAGE ---------------
+
+export default function xxxPage() {
+    return (
+        <div>
+            <h1>xxxPage</h1>
+        </div>
+    )
+}
+
+--------------- LAYOUT ---------------
+
+export default function xxxLayout({
+    children,
+}: Readonly<{
+    children: React.ReactNode;
+}>) {
+    return (
+        <html lang="en">
+            <body>{children}</body>
+        </html>
+    );
+}
+
