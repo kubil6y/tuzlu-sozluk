@@ -8,7 +8,7 @@ const channels = [
     "pol",
     "economics",
     "fun",
-    "photogoraphy",
+    "photography",
 ];
 
 function deleteChannels() {

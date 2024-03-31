@@ -4,12 +4,15 @@ import { db } from "@/lib/db";
 import { authConfig } from "./auth-config";
 import { getUserById } from "./data/user";
 
+const secret = process.env.AUTH_SECRET ?? "supersecret";
+
 export const {
     signIn,
     signOut,
     handlers: { GET, POST },
     auth,
 } = NextAuth({
+    secret,
     callbacks: {
         // Execution flow: jwt -> session -> user;
         async jwt({token}) {
@@ -21,13 +24,15 @@ export const {
                 return token;
             }
             if (user.username) {
+                token.sub = user.id;
                 token.username = user.username;
             }
             return token;
         },
         async session({ session, token }) {
-            if (session.user) {
+            if (session.user && token.sub) {
                 session.user.username = token.username;
+                session.user.id = token.sub;
             }
             return session;
         }

@@ -5,6 +5,7 @@ import { fontSans } from "@/components/fonts";
 import { cn } from "@/lib/utils";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
     title: "Tuzlu Sozluk",
@@ -33,6 +34,8 @@ export default async function RootLayout({
                         disableTransitionOnChange
                     >
                         {children}
+
+                        <Toaster />
                     </ThemeProvider>
                 </body>
             </html>

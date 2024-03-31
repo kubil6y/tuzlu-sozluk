@@ -2,6 +2,7 @@ import Link from "next/link";
 import { titleFont } from "./fonts";
 import { cn } from "@/lib/utils";
 import { LogoIcon } from "./logo-icon";
+import { Icons } from "./icons";
 
 export const Logo = () => {
     return (
@@ -16,7 +17,7 @@ export const Logo = () => {
                 )}
             >
                 TUZLU
-                <LogoIcon />
+                <Icons.logo className="size-6 mx-2 fill-fuchsia-600" />
                 SOZLUK
             </h1>
         </Link>
