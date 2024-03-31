@@ -1,13 +1,13 @@
 import Link from "next/link";
-import { Icons } from "./icons";
 import { titleFont } from "./fonts";
 import { cn } from "@/lib/utils";
+import { LogoIcon } from "./logo-icon";
 
 export const Logo = () => {
     return (
         <Link
             href="/"
-            className="cursor-pointer flex items-center w-[200px] p-2 bg-blue-500"
+            className="cursor-pointer flex items-center w-[200px] p-2"
         >
             <h1
                 className={cn(
@@ -16,9 +16,7 @@ export const Logo = () => {
                 )}
             >
                 TUZLU
-                <span>
-                    <Icons.logo className="size-6 mx-2" />
-                </span>
+                <LogoIcon />
                 SOZLUK
             </h1>
         </Link>

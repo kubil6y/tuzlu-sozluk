@@ -32,8 +32,6 @@ export default async function RootLayout({
                         enableSystem
                         disableTransitionOnChange
                     >
-                        <div className="h-[7px] w-full bg-gradient-to-r from-rose-400 via-fuchsia-500 to-indigo-500 shadow-lg shadow-black"></div>
-
                         {children}
                     </ThemeProvider>
                 </body>

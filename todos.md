@@ -1,1 +1,6 @@
-- oauth provider should assign a username to user!
+-   seed channels
+    -   general
+    -   sports
+    -   pol
+    -   economics
+    -   fun
