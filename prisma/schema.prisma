@@ -46,6 +46,7 @@ model Post {
     id        String   @id @default(cuid())
     title     String
     body      String
+    slug      String   @unique
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
