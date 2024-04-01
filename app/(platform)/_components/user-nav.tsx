@@ -1,7 +1,5 @@
 "use client";
 
-import { LogOut, MoonIcon, SunIcon, UserIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -16,20 +14,17 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { signOut } from "next-auth/react";
-import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useMounted } from "@/hooks/use-mounted";
+import { Button } from "@/components/ui/button";
+import { LogOut, MoonIcon, SunIcon, UserIcon } from "lucide-react";
 
 export function UserNav() {
+    const mounted = useMounted();
     const { theme, setTheme } = useTheme();
     const router = useRouter();
-    const [mounted, setMounted] = useState<boolean>(false);
     const ThemeIcon = theme === "light" ? SunIcon : MoonIcon;
-
-    useEffect(() => {
-        setMounted(true);
-    });
 
     if (!mounted) {
         return null;

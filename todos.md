@@ -1,3 +1,4 @@
+- voting client 
 - callback url logic
 
 -   seed channels

@@ -12,7 +12,6 @@ declare module "next-auth" {
      */
     interface Session {
         user: ExtendedUser;
-        lmfao: boolean;
     }
 }
 

@@ -11,7 +11,7 @@ import Link from "next/link";
 export async function SideNav() {
     const posts = await getPostsSummary();
     return (
-        <div className="hidden md:block p-2 overflow-y-auto max-h-[90vh]">
+        <div className="hidden md:block p-2 overflow-y-auto">
             <div className="">
                 {posts.map((post) => (
                     <PostItem

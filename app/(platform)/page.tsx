@@ -1,9 +1,41 @@
-import { Button } from "@/components/ui/button";
+import { getPosts } from "@/data/posts";
+import { Suspense } from "react";
+import { PostCard, PostCardSkeleton } from "./_components/post-card";
 
-export default function Home() {
+export default async function Home() {
     return (
-        <div className="bg-gray-200 h-full">
-            <Button>merhaba</Button>
+        <>
+            <Suspense fallback={
+                <>
+                    <PostCardSkeleton />
+                    <PostCardSkeleton />
+                    <PostCardSkeleton />
+                </>
+            }>
+                <PostList fetcher={getPosts} />
+            </Suspense>
+        </>
+    );
+}
+
+type PostListProps = {
+    fetcher: () => Promise<
+        {
+            id: string;
+            title: string;
+            body: string;
+            slug: string;
+        }[]
+    >;
+};
+
+async function PostList({ fetcher }: PostListProps) {
+    const posts = await fetcher();
+    return (
+        <div className="divide-y-1 overflow-y-auto">
+            {posts.map((post) => (
+                <PostCard key={post.id} {...post} postId={post.id} />
+            ))}
         </div>
     );
 }
