@@ -7,6 +7,7 @@ import { postSchema } from "@/schemas/post";
 import { redirect } from "next/navigation";
 import slugify from "slugify";
 import { createId } from "@paralleldrive/cuid2";
+import { revalidatePath } from "next/cache";
 
 export const createPost = action(
     postSchema,
@@ -37,7 +38,9 @@ export const createPost = action(
             },
         });
 
+        revalidatePath("/");
+        revalidatePath("/posts/new");
+        revalidatePath(`/posts/${post.slug}`);
         redirect(`/posts/${post.slug}`);
-        // TODO: revalidate!
     }
 );

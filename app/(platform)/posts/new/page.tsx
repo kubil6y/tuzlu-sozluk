@@ -1,6 +1,5 @@
 import { db } from "@/lib/db";
 import { NewPostForm } from "../../_components/new-post-form";
-import { _cache } from "@/lib/cache";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 

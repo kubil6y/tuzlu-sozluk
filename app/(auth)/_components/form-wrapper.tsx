@@ -4,11 +4,11 @@ import {
     CardContent,
     CardHeader,
 } from "@/components/ui/card";
-import Link from "next/link";
 import { titleFont } from "@/components/fonts";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
+import Link from "next/link";
 
 type FormWrapperProps = {
     children: React.ReactNode;
@@ -26,18 +26,18 @@ export const FormWrapper = ({
     return (
         <Card className="w-[360px]">
             <CardHeader className="flex flex-col items-center justify-center">
-                <h1
+                <Link href="/"
                     className={cn(
                         titleFont.className,
-                        "text-4xl uppercase flex items-center justify-center"
+                        "text-4xl uppercase flex items-center justify-center cursor-pointer"
                     )}
                 >
                     TUZLU
                     <span>
-                        <Icons.logo className="size-10 mx-2"/>
+                        <Icons.logo className="size-10 mx-2" />
                     </span>
                     SOZLUK
-                </h1>
+                </Link>
                 <h2 className="pt-4">{label}</h2>
             </CardHeader>
             <CardContent>{children}</CardContent>
