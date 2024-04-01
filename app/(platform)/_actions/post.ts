@@ -38,9 +38,7 @@ export const createPost = action(
             },
         });
 
-        revalidatePath("/");
-        revalidatePath("/posts/new");
-        revalidatePath(`/posts/${post.slug}`);
+        revalidatePath("/(platform)/layout");
         redirect(`/posts/${post.slug}`);
     }
 );

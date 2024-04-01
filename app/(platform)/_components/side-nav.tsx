@@ -1,32 +1,54 @@
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { getPostsSummary } from "@/data/posts";
 import { _cache } from "@/lib/cache";
-import { db } from "@/lib/db";
-
-const getPostsSummary = _cache(() => {
-    console.log("getPostsSummary()");
-    return db.post.findMany({
-        select: {
-            id: true,
-            slug: true,
-            title: true,
-            comments: {
-                select: { id: true },
-            },
-        },
-    });
-}, ["/", "getPostsSummary"]);
+import Link from "next/link";
 
 export async function SideNav() {
     const posts = await getPostsSummary();
-
     return (
-        <div className="hidden md:block md:w-[] p-4 bg-gray-200">
-            <h1>side nav</h1>
-
-            {posts.map((post) => (
-                <div key={post.id}>
-                    {post.title} {post.comments.length}
-                </div>
-            ))}
+        <div className="hidden md:block p-2 overflow-y-auto max-h-[90vh]">
+            <div className="">
+                {posts.map((post) => (
+                    <PostItem
+                        key={post.id}
+                        title={post.title}
+                        slug={post.slug}
+                        commentAmount={post.comments.length}
+                    />
+                ))}
+            </div>
         </div>
+    );
+}
+
+type PostItemProps = {
+    title: string;
+    slug: string;
+    commentAmount: number;
+};
+
+function PostItem({ title, slug, commentAmount }: PostItemProps) {
+    return (
+        <TooltipProvider>
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <Link
+                        href={`/posts/${slug}`}
+                        className="px-4 py-3 flex items-center justify-between cursor-pointer hover:bg-primary/80 transition hover:text-white"
+                    >
+                        <p className="w-[90%] truncate">{title}</p>
+                        <p className="w-[10%] text-end">{commentAmount}</p>
+                    </Link>
+                </TooltipTrigger>
+                <TooltipContent>
+                    <p>{title}</p>
+                </TooltipContent>
+            </Tooltip>
+        </TooltipProvider>
     );
 }

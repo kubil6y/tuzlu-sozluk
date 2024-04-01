@@ -1,21 +1,15 @@
+import { getPostBySlug } from "@/data/posts";
 import { db } from "@/lib/db";
+import { notFound } from "next/navigation";
 
 export default async function PostDetailsPage({
     params,
 }: {
     params: { slug: string };
 }) {
-    const post = await db.post.findFirst({
-        where: {
-            slug: params.slug,
-        },
-    });
+    const post = await getPostBySlug(params.slug);
     if (!post) {
-        return (
-            <div>
-                <h1>not found</h1>
-            </div>
-        );
+        return notFound();
     }
     return (
         <div>
