@@ -1,5 +1,4 @@
 import { getPostBySlug } from "@/data/posts";
-import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
 
 export default async function PostDetailsPage({

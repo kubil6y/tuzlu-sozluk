@@ -25,6 +25,7 @@ import { Vote, Comment, VoteType } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import Link from "next/link";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type PostCardProps = {
     postId: string;
@@ -115,10 +116,29 @@ export const PostCard = ({
 
 export function PostCardSkeleton() {
     return (
-        <div>
-            <div>skeleton</div>
-            <div>skeleton</div>
-            <div>skeleton</div>
+        <div className="p-4">
+            <Skeleton className="h-6 w-[50%] mb-4"/>
+
+            <div className="space-y-1">
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-full" />
+            </div>
+
+            <div className="flex items-center justify-between mt-3">
+                <div className="flex items-center space-x-6">
+                    <Skeleton className="size-8 rounded-lg"/>
+                    <Skeleton className="size-8 rounded-lg"/>
+                    <Skeleton className="size-8 rounded-lg"/>
+                </div>
+                <div className="flex items-center justify-end space-x-1">
+                    <div className="flex flex-col items-end space-y-1">
+                        <Skeleton className="w-12 h-2"/>
+                        <Skeleton className="w-24 h-2"/>
+                    </div>
+                    <Skeleton className="size-5 rounded"/>
+                </div>
+            </div>
         </div>
     );
 }

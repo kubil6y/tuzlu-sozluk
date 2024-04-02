@@ -59,11 +59,12 @@ export function PostListWithSuspense({ fetcher }: PostListWithSuspenseProps) {
         <>
             <Suspense
                 fallback={
-                    <>
+                    <div className="space-y-4">
                         <PostCardSkeleton />
                         <PostCardSkeleton />
                         <PostCardSkeleton />
-                    </>
+                        <PostCardSkeleton />
+                    </div>
                 }
             >
                 <PostList fetcher={fetcher} />

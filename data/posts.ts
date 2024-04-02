@@ -1,8 +1,10 @@
 import { _cache } from "@/lib/cache";
 import { db } from "@/lib/db";
+import { TODO_sleep } from "@/lib/sleep";
 
 export const getPosts = _cache(async () => {
     console.log("getPosts");
+    await TODO_sleep(5000);
     return db.post.findMany({
         select: {
             id: true,
@@ -47,7 +49,8 @@ export const getPostBySlug = _cache(
 );
 
 export const getChannelPosts = _cache(
-    (channelName: string) => {
+    async (channelName: string) => {
+        await TODO_sleep(5000);
         console.log("getPosts");
         return db.post.findMany({
             select: {
@@ -75,8 +78,8 @@ export const getChannel = _cache(
         return db.channel.findFirst({
             where: {
                 name: channelName,
-            }
-        })
+            },
+        });
     },
     ["/", "getChannel"]
 );
