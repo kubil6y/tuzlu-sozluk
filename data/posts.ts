@@ -15,7 +15,7 @@ export const getPosts = _cache(async () => {
         take: 10,
         orderBy: {
             createdAt: "desc",
-        }
+        },
     });
 }, ["/", "getPosts"]);
 
@@ -42,4 +42,37 @@ export const getPostBySlug = _cache(
         });
     },
     ["/posts/[slug]", "getPostBySlug"]
+);
+
+export const getChannelPosts = _cache(
+    (channelName: string) => {
+        console.log("getPosts");
+        return db.post.findMany({
+            select: {
+                id: true,
+                body: true,
+                slug: true,
+                title: true,
+                votes: true,
+                comments: true,
+            },
+            where: { channel: { name: channelName } },
+            take: 10,
+            orderBy: {
+                createdAt: "desc",
+            },
+        });
+    },
+    ["/", "getChannelWithPosts"]
+);
+
+export const getChannel = _cache(
+    (channelName: string) => {
+        return db.channel.findFirst({
+            where: {
+                name: channelName,
+            }
+        })
+    },
+    ["/", "getChannel"]
 );

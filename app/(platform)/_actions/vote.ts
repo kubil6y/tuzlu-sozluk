@@ -1,10 +1,10 @@
 "use server";
+
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { action } from "@/lib/safe-action";
 import { revalidatePath } from "next/cache";
 import { voteSchema } from "@/schemas/vote";
-import { TODO_sleep } from "@/lib/sleep";
 
 export const votePost = action(voteSchema, async ({ postId, voteType }) => {
     const session = await auth();
@@ -50,6 +50,6 @@ export const votePost = action(voteSchema, async ({ postId, voteType }) => {
         });
     }
 
-    // TODO
-    revalidatePath("/");
+    revalidatePath("/(platform)", "page");
+    revalidatePath("/(platform)/channel/[channelName]", "page")
 });

@@ -23,6 +23,7 @@ import { useAction } from "next-safe-action/hooks";
 import { votePost } from "../_actions/vote";
 import { Vote, Comment, VoteType } from "@prisma/client";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 type PostCardProps = {
     postId: string;
@@ -54,7 +55,9 @@ export const PostCard = ({
 
     return (
         <div className="p-4">
-            <h3 className="text-lg font-semibold lowercase">{title}</h3>
+            <Link href={`/posts/${slug}`} className="hover:underline text-lg font-semibold lowercase">
+                <h3>{title}</h3>
+            </Link>
             <div
                 className={cn("mt-2 lowercase", isTruncated && "line-clamp-4")}
             >
@@ -76,7 +79,9 @@ export const PostCard = ({
 
                     <div className="flex items-center space-x-1.5">
                         <MessageCircleIcon className="size-5 text-slate-700" />
-                        <span className="text-sm select-none">{comments.length}</span>
+                        <span className="text-sm select-none">
+                            {comments.length}
+                        </span>
                     </div>
                 </div>
 
@@ -127,7 +132,7 @@ function PostVotes({ postId, votes }: PostVotesProps) {
                     downvoteCount++;
                     break;
                 default:
-                    console.error("Invalid vote type:" , votes[i].type);
+                    console.error("Invalid vote type:", votes[i].type);
                     break;
             }
         }
