@@ -10,7 +10,9 @@ export const getPosts = _cache(async () => {
             slug: true,
             title: true,
             votes: true,
+            user: true,
             comments: true,
+            createdAt: true,
         },
         take: 10,
         orderBy: {
@@ -53,6 +55,8 @@ export const getChannelPosts = _cache(
                 body: true,
                 slug: true,
                 title: true,
+                createdAt: true,
+                user: true,
                 votes: true,
                 comments: true,
             },

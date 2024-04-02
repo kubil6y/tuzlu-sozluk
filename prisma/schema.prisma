@@ -51,7 +51,7 @@ model Post {
     updatedAt DateTime @updatedAt
 
     userId    String
-    User      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
     channelId String
     channel   Channel   @relation(fields: [channelId], references: [id])
     comments  Comment[]

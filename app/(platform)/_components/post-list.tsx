@@ -1,4 +1,4 @@
-import { Vote, Comment } from "@prisma/client";
+import { Vote, Comment, User } from "@prisma/client";
 import { PostCard, PostCardSkeleton } from "./post-card";
 import { Suspense } from "react";
 
@@ -9,6 +9,8 @@ type PostListProps = {
             title: string;
             body: string;
             slug: string;
+            createdAt: Date;
+        user: User;
             votes: Vote[];
             comments: Comment[];
         }[]
@@ -29,6 +31,8 @@ async function PostList({ fetcher }: PostListProps) {
                         body={post.body}
                         votes={post.votes}
                         comments={post.comments}
+                        authorName={post.user?.username ?? ""}
+                        createdAt={post.createdAt}
                     />
                 ))}
         </div>
@@ -42,6 +46,8 @@ type PostListWithSuspenseProps = {
             title: string;
             body: string;
             slug: string;
+            createdAt: Date;
+            user: User;
             votes: Vote[];
             comments: Comment[];
         }[]

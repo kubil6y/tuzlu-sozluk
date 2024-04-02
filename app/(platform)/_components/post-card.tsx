@@ -23,10 +23,13 @@ import { useAction } from "next-safe-action/hooks";
 import { votePost } from "../_actions/vote";
 import { Vote, Comment, VoteType } from "@prisma/client";
 import { useRouter } from "next/navigation";
+import { format } from "date-fns";
 import Link from "next/link";
 
 type PostCardProps = {
     postId: string;
+    authorName: string;
+    createdAt: Date;
     title: string;
     slug: string;
     body: string;
@@ -36,6 +39,8 @@ type PostCardProps = {
 
 export const PostCard = ({
     postId,
+    authorName,
+    createdAt,
     title,
     slug,
     body,
@@ -53,9 +58,13 @@ export const PostCard = ({
         return null;
     }
 
+
     return (
         <div className="p-4">
-            <Link href={`/posts/${slug}`} className="hover:underline text-lg font-semibold lowercase">
+            <Link
+                href={`/posts/${slug}`}
+                className="hover:underline text-xl font-semibold lowercase"
+            >
                 <h3>{title}</h3>
             </Link>
             <div
@@ -85,7 +94,20 @@ export const PostCard = ({
                     </div>
                 </div>
 
-                <MoreOptions slug={slug} />
+                <div className="flex items-center justify-between space-x-4">
+                    <div className="flex items-end flex-col justify-center">
+                        <Link
+                            href={`/users/${authorName}`}
+                            className="text-xs text-primary hover:underline"
+                        >
+                            {authorName.toLowerCase()}
+                        </Link>
+                        <p className="text-xs text-foreground/80">
+                            {format(createdAt, "dd.MM.yyyy hh:mm")}
+                        </p>
+                    </div>
+                    <MoreOptions slug={slug} />
+                </div>
             </div>
         </div>
     );
