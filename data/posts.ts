@@ -2,7 +2,6 @@ import { _cache } from "@/lib/cache";
 import { db } from "@/lib/db";
 
 export const getPosts = _cache(async () => {
-    // TODO remove
     console.log("getPosts");
     return db.post.findMany({
         select: {
@@ -10,6 +9,8 @@ export const getPosts = _cache(async () => {
             body: true,
             slug: true,
             title: true,
+            votes: true,
+            comments: true,
         },
         take: 10,
         orderBy: {
@@ -19,7 +20,6 @@ export const getPosts = _cache(async () => {
 }, ["/", "getPosts"]);
 
 export const getPostsSummary = _cache(() => {
-    // TODO remove
     return db.post.findMany({
         select: {
             id: true,
@@ -34,7 +34,6 @@ export const getPostsSummary = _cache(() => {
 
 export const getPostBySlug = _cache(
     (slug: string) => {
-        // TODO remove
         console.log(`getPostBySlug(${slug})`);
         return db.post.findFirst({
             where: {

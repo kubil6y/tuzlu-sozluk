@@ -5,7 +5,7 @@ import {
     ChevronDownIcon,
     ShareIcon,
     LinkIcon,
-    LucideIcon,
+    MessageCircleIcon,
 } from "lucide-react";
 import {
     DropdownMenu,
@@ -21,19 +21,27 @@ import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
 import { useAction } from "next-safe-action/hooks";
 import { votePost } from "../_actions/vote";
+import { Vote, Comment, VoteType } from "@prisma/client";
+import { useRouter } from "next/navigation";
 
 type PostCardProps = {
     postId: string;
     title: string;
     slug: string;
     body: string;
+    votes: Vote[];
+    comments: Comment[];
 };
 
-// NOTE: anyone can vote on posts but only logged in users can see the vote amounts
-export const PostCard = ({ postId, title, slug, body }: PostCardProps) => {
+export const PostCard = ({
+    postId,
+    title,
+    slug,
+    body,
+    votes,
+    comments,
+}: PostCardProps) => {
     const mounted = useMounted();
-    const session = useSession();
-    const { status, execute: vote } = useAction(votePost);
 
     const maxCharAmount = 200;
     const [isTruncated, setIsTruncated] = useState<boolean>(
@@ -63,32 +71,15 @@ export const PostCard = ({ postId, title, slug, body }: PostCardProps) => {
             )}
 
             <div className="flex items-center justify-between mt-4">
-                {session?.data?.user ? (
-                    <div className="flex items-center space-x-5">
-                        <VoteButton
-                            disabled={status === "executing"}
-                            onClick={() =>
-                                vote({
-                                    voteType: "Up",
-                                    postId,
-                                })
-                            }
-                            icon={ChevronUpIcon}
-                        />
-                        <VoteButton
-                            disabled={status === "executing"}
-                            onClick={() =>
-                                vote({
-                                    voteType: "Down",
-                                    postId,
-                                })
-                            }
-                            icon={ChevronDownIcon}
-                        />
+                <div className="flex items-center space-x-6">
+                    <PostVotes postId={postId} votes={votes} />
+
+                    <div className="flex items-center space-x-1.5">
+                        <MessageCircleIcon className="size-5 text-slate-700" />
+                        <span className="text-sm select-none">{comments.length}</span>
                     </div>
-                ) : (
-                    <p>login to vote</p>
-                )}
+                </div>
+
                 <MoreOptions slug={slug} />
             </div>
         </div>
@@ -105,29 +96,86 @@ export function PostCardSkeleton() {
     );
 }
 
-type VoteButtonProps = {
-    disabled: boolean;
-    onClick: () => void;
-    icon: LucideIcon;
-    voted?: boolean;
+type PostVotesProps = {
+    postId: string;
+    votes: Vote[];
 };
 
-function VoteButton({
-    disabled,
-    onClick,
-    icon: Icon,
-    voted = false,
-}: VoteButtonProps) {
+function PostVotes({ postId, votes }: PostVotesProps) {
+    const session = useSession();
+    const router = useRouter();
+    const isLoggedIn = Boolean(session?.data?.user);
+    const { status, execute: vote } = useAction(votePost);
+
+    function processVotes(votes: Vote[]): {
+        upvoteCount: number;
+        downvoteCount: number;
+        existingVote: Vote | null;
+    } {
+        let upvoteCount = 0;
+        let downvoteCount = 0;
+        let existingVote: Vote | null = null;
+        for (let i = 0; i < votes.length; i++) {
+            if (votes[i].userId === session?.data?.user?.id) {
+                existingVote = votes[i];
+            }
+            switch (votes[i].type) {
+                case "Up":
+                    upvoteCount++;
+                    break;
+                case "Down":
+                    downvoteCount++;
+                    break;
+                default:
+                    console.error("Invalid vote type:" , votes[i].type);
+                    break;
+            }
+        }
+        return { upvoteCount, downvoteCount, existingVote };
+    }
+
+    function voteOnClick(voteType: VoteType) {
+        if (!isLoggedIn) {
+            router.push("/login");
+            return;
+        }
+        vote({ voteType, postId });
+    }
+
+    const { upvoteCount, downvoteCount, existingVote } = processVotes(votes);
+
     return (
-        <Button
-            variant="outline"
-            size="smIcon"
-            disabled={disabled}
-            onClick={onClick}
-            className={cn(voted && "bg-primary text-white")}
-        >
-            <Icon className="size-5" />
-        </Button>
+        <>
+            <div className="flex items-center space-x-1.5">
+                <Button
+                    variant="outline"
+                    size="smIcon"
+                    disabled={status === "executing"}
+                    onClick={() => voteOnClick("Up")}
+                    className={cn(
+                        existingVote?.type === "Up" && "bg-primary text-white"
+                    )}
+                >
+                    <ChevronUpIcon className="size-5" />
+                </Button>
+                <span className="text-sm select-none">{upvoteCount}</span>
+            </div>
+
+            <div className="flex items-center space-x-1.5">
+                <Button
+                    variant="outline"
+                    size="smIcon"
+                    disabled={status === "executing"}
+                    onClick={() => voteOnClick("Down")}
+                    className={cn(
+                        existingVote?.type === "Down" && "bg-primary text-white"
+                    )}
+                >
+                    <ChevronDownIcon className="size-5" />
+                </Button>
+                <span className="text-sm select-none">{downvoteCount}</span>
+            </div>
+        </>
     );
 }
 
