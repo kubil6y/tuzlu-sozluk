@@ -1,28 +1,99 @@
 import { _cache } from "@/lib/cache";
 import { db } from "@/lib/db";
 
-export const getPosts = _cache(async (page?: number, take?: number) => {
-    console.log("getPosts");
-    const takePost = take ?? 10;
-    const skip = page ? (page - 1) * takePost : 0;
-    return db.post.findMany({
-        select: {
-            id: true,
-            body: true,
-            slug: true,
-            title: true,
-            votes: true,
-            user: true,
-            comments: true,
-            createdAt: true,
-        },
-        take: takePost,
-        skip,
-        orderBy: {
-            createdAt: "desc",
-        },
-    });
-}, ["/", "getPosts"]);
+export const getPosts = _cache(
+    async (page?: number, take?: number) => {
+        const takePost = take ?? 10;
+        const skip = page ? (page - 1) * takePost : 0;
+
+        const [postCount, posts] = await db.$transaction([
+            db.post.count(),
+            db.post.findMany({
+                select: {
+                    id: true,
+                    body: true,
+                    slug: true,
+                    title: true,
+                    votes: true,
+                    user: true,
+                    comments: true,
+                    createdAt: true,
+                },
+                take: takePost,
+                skip,
+                orderBy: {
+                    createdAt: "desc",
+                },
+            }),
+        ]);
+
+        return {
+            postCount,
+            posts,
+        };
+    },
+    ["/", "getPosts"]
+);
+
+export const getChannelPosts = _cache(
+    async (channelName: string, page?: number, take?: number) => {
+        const takePost = take ?? 10;
+        const skip = page ? (page - 1) * takePost : 0;
+        const [postCount, posts] = await db.$transaction([
+            db.post.count({ where: { channel: { name: channelName } } }),
+            db.post.findMany({
+                select: {
+                    id: true,
+                    body: true,
+                    slug: true,
+                    title: true,
+                    createdAt: true,
+                    user: true,
+                    votes: true,
+                    comments: true,
+                },
+                where: { channel: { name: channelName } },
+                take: takePost,
+                skip,
+                orderBy: {
+                    createdAt: "desc",
+                },
+            }),
+        ]);
+        return { postCount, posts };
+    },
+    ["/", "getChannelWithPosts"]
+);
+
+export const getUserPosts = _cache(
+    async (username: string, page?: number, take?: number) => {
+        const takePost = take ?? 10;
+        const skip = page ? (page - 1) * takePost : 0;
+        const [postCount, posts] = await db.$transaction([
+            db.post.count({ where: { user: { username }} }),
+            db.post.findMany({
+                select: {
+                    id: true,
+                    body: true,
+                    slug: true,
+                    title: true,
+                    createdAt: true,
+                    user: true,
+                    votes: true,
+                    comments: true,
+                },
+                where: { user: { username }},
+                take: takePost,
+                skip,
+                orderBy: {
+                    createdAt: "desc",
+                },
+            }),
+        ]);
+        return { postCount, posts };
+    },
+    ["/", "getUserPosts"]
+);
 
 export const getPostsSummary = _cache(() => {
     return db.post.findMany({
@@ -34,12 +105,15 @@ export const getPostsSummary = _cache(() => {
                 select: { id: true },
             },
         },
+        take: 25,
+        orderBy: {
+            createdAt: "desc",
+        }
     });
 }, ["/", "getPostsSummary"]);
 
 export const getPostBySlug = _cache(
     (slug: string) => {
-        console.log(`getPostBySlug(${slug})`);
         return db.post.findFirst({
             select: {
                 id: true,
@@ -54,7 +128,7 @@ export const getPostBySlug = _cache(
                         body: true,
                         createdAt: true,
                         user: true,
-                    }
+                    },
                 },
                 createdAt: true,
             },
@@ -64,30 +138,6 @@ export const getPostBySlug = _cache(
         });
     },
     ["/posts/[slug]", "getPostBySlug"]
-);
-
-export const getChannelPosts = _cache(
-    async (channelName: string) => {
-        console.log("getPosts");
-        return db.post.findMany({
-            select: {
-                id: true,
-                body: true,
-                slug: true,
-                title: true,
-                createdAt: true,
-                user: true,
-                votes: true,
-                comments: true,
-            },
-            where: { channel: { name: channelName } },
-            take: 10,
-            orderBy: {
-                createdAt: "desc",
-            },
-        });
-    },
-    ["/", "getChannelWithPosts"]
 );
 
 export const getChannel = _cache(

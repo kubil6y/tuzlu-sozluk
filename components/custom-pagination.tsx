@@ -44,14 +44,28 @@ export function CustomPagination({ totalPages }: CustomPaginationProps) {
         ? Number(searchParams.get("page"))
         : 1;
     const paginationItems = generatePagination(currentPage, totalPages);
-    const isPrevActive = currentPage > 1;
-    const isNextActive = currentPage < totalPages;
+    const isPrevDisabled = currentPage <= 1;
+    const isNextDisabled = currentPage >= totalPages;
+
+    function generateUrl(page: number | string) {
+        const params = new URLSearchParams(searchParams);
+        params.set("page", page.toString());
+        return `${pathname}?${params.toString()}`;
+    }
+
     return (
         <Pagination>
             <PaginationContent>
                 <PaginationItem>
-                    <div className={cn(!isPrevActive && "pointer-events-none")}>
-                        <PaginationPrevious href="#" className={cn(!isPrevActive && "text-foreground/50")}/>
+                    <div
+                        className={cn(isPrevDisabled && "pointer-events-none")}
+                    >
+                        <PaginationPrevious
+                            href={generateUrl(currentPage - 1)}
+                            className={cn(
+                                isPrevDisabled && "text-foreground/50"
+                            )}
+                        />
                     </div>
                 </PaginationItem>
                 {paginationItems.map((item, i) => (
@@ -59,19 +73,27 @@ export function CustomPagination({ totalPages }: CustomPaginationProps) {
                         {item === "E" ? (
                             <PaginationEllipsis />
                         ) : (
-                            <PaginationLink
-                                href="#"
-                                isActive={
-                                    item ? item === currentPage : item === 1
-                                }
+                            <div
+                                className={cn(
+                                    item === currentPage &&
+                                    "pointer-events-none"
+                                )}
                             >
-                                {item}
-                            </PaginationLink>
+                                <PaginationLink
+                                    href={generateUrl(item)}
+                                    isActive={item === currentPage}
+                                >
+                                    {item}
+                                </PaginationLink>
+                            </div>
                         )}
                     </PaginationItem>
                 ))}
-                <div className={cn(!isNextActive && "pointer-events-none")}>
-                    <PaginationNext href="#" className={cn(!isNextActive && "text-foreground/50")}/>
+                <div className={cn(isNextDisabled && "pointer-events-none")}>
+                    <PaginationNext
+                        href={generateUrl(currentPage + 1)}
+                        className={cn(isNextDisabled && "text-foreground/50")}
+                    />
                 </div>
             </PaginationContent>
         </Pagination>

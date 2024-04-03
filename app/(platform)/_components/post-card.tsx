@@ -188,7 +188,7 @@ function PostVotes({ postId, votes }: PostVotesProps) {
             router.push("/login");
             return;
         }
-        vote({ voteType, postId });
+        vote({ voteType, postId, username: session?.data?.user?.username! });
     }
 
     const { upvoteCount, downvoteCount, existingVote } = processVotes(votes);

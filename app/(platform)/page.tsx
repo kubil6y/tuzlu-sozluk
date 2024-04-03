@@ -1,6 +1,5 @@
 import { getPosts } from "@/data/posts";
 import { PostListWithSuspense } from "./_components/post-list";
-import { CustomPagination } from "@/components/custom-pagination";
 
 export default async function Home({
     searchParams,
@@ -8,12 +7,10 @@ export default async function Home({
     searchParams: { page: string };
 }) {
     const page = Number(searchParams?.page ?? 0);
-    const take = 3;
-    // leftoff totalPages is hardcoded
+    const take = 10;
     return (
         <>
             <PostListWithSuspense fetcher={getPosts} take={take} page={page} />
-            <CustomPagination totalPages={10} />
         </>
     );
 }

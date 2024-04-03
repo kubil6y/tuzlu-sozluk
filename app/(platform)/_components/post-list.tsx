@@ -1,6 +1,7 @@
 import { Vote, Comment, User } from "@prisma/client";
 import { PostCard, PostCardSkeleton } from "./post-card";
 import { Suspense } from "react";
+import { CustomPagination } from "@/components/custom-pagination";
 
 type PostListProps = {
     page?: number;
@@ -8,8 +9,9 @@ type PostListProps = {
     fetcher: (
         page?: number,
         take?: number
-    ) => Promise<
-        {
+    ) => Promise<{
+        postCount: number;
+        posts: {
             id: string;
             title: string;
             body: string;
@@ -18,19 +20,20 @@ type PostListProps = {
             user: User;
             votes: Vote[];
             comments: Comment[];
-        }[]
-    >;
+        }[];
+    }>;
 };
 
 async function PostList({ page, take, fetcher }: PostListProps) {
-    const posts = await fetcher(page, take);
-    if (posts.length === 0) {
-        return <p>no posts found</p>
+    const { postCount, posts } = await fetcher(page, take);
+    const totalPages = Math.ceil(postCount / 10);
+    if (!posts || posts?.length === 0) {
+        return <p>no posts found</p>;
     }
     return (
-        <div className="divide-y-1 overflow-y-auto">
-            {posts?.length &&
-                posts.map((post) => (
+        <>
+            <div className="divide-y-1 overflow-y-auto">
+                {posts.map((post) => (
                     <PostCard
                         key={post.id}
                         postId={post.id}
@@ -43,7 +46,9 @@ async function PostList({ page, take, fetcher }: PostListProps) {
                         createdAt={post.createdAt}
                     />
                 ))}
-        </div>
+                <CustomPagination totalPages={totalPages} />
+            </div>
+        </>
     );
 }
 
@@ -53,8 +58,9 @@ type PostListWithSuspenseProps = {
     fetcher: (
         page?: number,
         take?: number
-    ) => Promise<
-        {
+    ) => Promise<{
+        postCount: number;
+        posts: {
             id: string;
             title: string;
             body: string;
@@ -63,8 +69,8 @@ type PostListWithSuspenseProps = {
             user: User;
             votes: Vote[];
             comments: Comment[];
-        }[]
-    >;
+        }[];
+    }>;
 };
 
 export function PostListWithSuspense({
