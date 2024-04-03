@@ -1,6 +1,5 @@
-- voting client 
-- post owner information on post card
-- callback url logic
+-   search input
+-   comment pagination / sidenav pagination
 
 -   seed channels
     -   general
