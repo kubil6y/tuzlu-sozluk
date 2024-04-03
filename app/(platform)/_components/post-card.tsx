@@ -27,6 +27,8 @@ import { format } from "date-fns";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
 
+type SlimComment = Pick<Comment, "id" | "body" | "createdAt">;
+
 type PostCardProps = {
     postId: string;
     authorName: string;
@@ -35,7 +37,7 @@ type PostCardProps = {
     slug: string;
     body: string;
     votes: Vote[];
-    comments: Comment[];
+    comments: SlimComment[];
 };
 
 export const PostCard = ({
@@ -243,7 +245,7 @@ function MoreOptions({ slug }: MoreOptionsProps) {
                     <DropdownMenuItem
                         onClick={() => {
                             navigator.clipboard.writeText(
-                                window.location.href + `posts/${slug}`
+                                window.location.origin + `/posts/${slug}`
                             );
                         }}
                     >

@@ -3,22 +3,30 @@ import { PostCard, PostCardSkeleton } from "./post-card";
 import { Suspense } from "react";
 
 type PostListProps = {
-    fetcher: () => Promise<
+    page?: number;
+    take?: number;
+    fetcher: (
+        page?: number,
+        take?: number
+    ) => Promise<
         {
             id: string;
             title: string;
             body: string;
             slug: string;
             createdAt: Date;
-        user: User;
+            user: User;
             votes: Vote[];
             comments: Comment[];
         }[]
     >;
 };
 
-async function PostList({ fetcher }: PostListProps) {
-    const posts = await fetcher();
+async function PostList({ page, take, fetcher }: PostListProps) {
+    const posts = await fetcher(page, take);
+    if (posts.length === 0) {
+        return <p>no posts found</p>
+    }
     return (
         <div className="divide-y-1 overflow-y-auto">
             {posts?.length &&
@@ -40,7 +48,12 @@ async function PostList({ fetcher }: PostListProps) {
 }
 
 type PostListWithSuspenseProps = {
-    fetcher: () => Promise<
+    page?: number;
+    take?: number;
+    fetcher: (
+        page?: number,
+        take?: number
+    ) => Promise<
         {
             id: string;
             title: string;
@@ -54,7 +67,11 @@ type PostListWithSuspenseProps = {
     >;
 };
 
-export function PostListWithSuspense({ fetcher }: PostListWithSuspenseProps) {
+export function PostListWithSuspense({
+    page,
+    take,
+    fetcher,
+}: PostListWithSuspenseProps) {
     return (
         <>
             <Suspense
@@ -67,7 +84,7 @@ export function PostListWithSuspense({ fetcher }: PostListWithSuspenseProps) {
                     </div>
                 }
             >
-                <PostList fetcher={fetcher} />
+                <PostList fetcher={fetcher} take={take} page={page} />
             </Suspense>
         </>
     );

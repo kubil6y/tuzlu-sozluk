@@ -1,10 +1,10 @@
 import { _cache } from "@/lib/cache";
 import { db } from "@/lib/db";
-import { TODO_sleep } from "@/lib/sleep";
 
-export const getPosts = _cache(async () => {
+export const getPosts = _cache(async (page?: number, take?: number) => {
     console.log("getPosts");
-    await TODO_sleep(5000);
+    const takePost = take ?? 10;
+    const skip = page ? (page - 1) * takePost : 0;
     return db.post.findMany({
         select: {
             id: true,
@@ -16,7 +16,8 @@ export const getPosts = _cache(async () => {
             comments: true,
             createdAt: true,
         },
-        take: 10,
+        take: takePost,
+        skip,
         orderBy: {
             createdAt: "desc",
         },
@@ -40,6 +41,23 @@ export const getPostBySlug = _cache(
     (slug: string) => {
         console.log(`getPostBySlug(${slug})`);
         return db.post.findFirst({
+            select: {
+                id: true,
+                body: true,
+                slug: true,
+                title: true,
+                votes: true,
+                user: true,
+                comments: {
+                    select: {
+                        id: true,
+                        body: true,
+                        createdAt: true,
+                        user: true,
+                    }
+                },
+                createdAt: true,
+            },
             where: {
                 slug,
             },
@@ -50,7 +68,6 @@ export const getPostBySlug = _cache(
 
 export const getChannelPosts = _cache(
     async (channelName: string) => {
-        await TODO_sleep(5000);
         console.log("getPosts");
         return db.post.findMany({
             select: {

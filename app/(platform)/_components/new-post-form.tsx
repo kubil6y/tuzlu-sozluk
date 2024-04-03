@@ -24,14 +24,12 @@ import { useAction } from "next-safe-action/hooks";
 import { Textarea } from "@/components/ui/textarea";
 import { Channel } from "@prisma/client";
 import { createPost } from "../_actions/post";
-import { useSession } from "next-auth/react";
 
 type NewPostFormProps = {
     channels: Channel[];
 };
 
 export const NewPostForm = ({ channels }: NewPostFormProps) => {
-    const session = useSession();
     const { result, status, execute } = useAction(createPost);
 
     const form = useForm<PostSchema>({
