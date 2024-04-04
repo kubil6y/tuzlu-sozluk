@@ -3,12 +3,15 @@ import { notFound } from "next/navigation";
 import { PostCard } from "../../_components/post-card";
 import { CommentForm } from "../../_components/comment-form";
 import { CommentCard } from "../../_components/comment-card";
+import { auth } from "@/auth";
+import Link from "next/link";
 
 export default async function PostDetailsPage({
     params,
 }: {
     params: { slug: string };
 }) {
+    const session = await auth();
     const post = await getPostBySlug(params.slug);
     if (!post) {
         return notFound();
@@ -26,7 +29,13 @@ export default async function PostDetailsPage({
                 comments={post.comments}
             />
             <div className="space-y-4">
-                <CommentForm postId={post.id} slug={post.slug} />
+                {session?.user ? (
+                    <CommentForm postId={post.id} slug={post.slug} />
+                ) : (
+                    <div className="px-4 mt-2 text-sm text-primary hover:underline">
+                        <Link href="/login">Login to comment</Link>
+                    </div>
+                )}
                 {post.comments.map((comment) => (
                     <CommentCard
                         authorName={comment.user.username ?? ""}
