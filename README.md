@@ -1,5 +1,10 @@
-# Eksisozluk clone
+Simple eksisozluk clone with next14
 
-## Sources
-
--   [Tailwindcss gradient examples](https://blog.logrocket.com/guide-adding-gradients-tailwind-css/)
+-   Typescript
+-   Next auth v5 beta
+-   Shadcn UI
+-   Prisma
+-   Postgresql
+-   Zod
+-   Server actions rpc
+-   React hook form
