@@ -63,7 +63,7 @@ export const PostCard = ({
     }
 
     return (
-        <div className="p-4">
+        <div className="p-2 md:px-4">
             <Link
                 href={`/posts/${slug}`}
                 className="hover:underline text-xl font-semibold lowercase"
@@ -71,7 +71,7 @@ export const PostCard = ({
                 <h3>{title}</h3>
             </Link>
             <div
-                className={cn("mt-2 lowercase", isTruncated && "line-clamp-4")}
+                className={cn("mt-2 md:mt-4 lowercase", isTruncated && "line-clamp-4")}
             >
                 {body}
             </div>
@@ -118,7 +118,7 @@ export const PostCard = ({
 
 export function PostCardSkeleton() {
     return (
-        <div className="p-4">
+        <div className="py-2 md:p-4">
             <Skeleton className="h-6 w-[50%] mb-4" />
 
             <div className="space-y-1">

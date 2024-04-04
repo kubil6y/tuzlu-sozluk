@@ -32,7 +32,7 @@ export default async function PostDetailsPage({
                 {session?.user ? (
                     <CommentForm postId={post.id} slug={post.slug} />
                 ) : (
-                    <div className="px-4 mt-2 text-sm text-primary hover:underline">
+                    <div className="px-4 my-8 md:my-4 text-sm text-primary hover:underline">
                         <Link href="/login">Login to comment</Link>
                     </div>
                 )}

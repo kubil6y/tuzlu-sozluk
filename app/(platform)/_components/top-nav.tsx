@@ -16,7 +16,9 @@ export async function TopNav() {
             <div className="flex items-center justify-between my-4">
                 <Logo />
 
-                <SearchBar />
+                <div className="hidden md:block w-full md:w-[40%] ">
+                    <SearchBar />
+                </div>
 
                 {session?.user ? (
                     <div className="flex items-center space-x-4">
@@ -36,7 +38,13 @@ export async function TopNav() {
                 )}
             </div>
 
-            <ChannelsNav />
+            <div className="block md:hidden mb-4">
+                <SearchBar />
+            </div>
+
+            {/*
+              *<ChannelsNav />
+              */}
             <Separator />
         </div>
     );

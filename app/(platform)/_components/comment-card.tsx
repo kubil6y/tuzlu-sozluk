@@ -31,7 +31,7 @@ export const CommentCard = ({
     }
 
     return (
-        <div className="p-4">
+        <div className="p-0 md:p-4">
             <div className="flex space-x-2">
                 <Link
                     href={`/users/${authorName}`}
@@ -63,7 +63,7 @@ export const CommentCard = ({
 
 export function CommentCardSkeleton() {
     return (
-        <div className="p-4">
+        <div className="p-0 md:p-4">
             <Skeleton className="h-6 w-[50%] mb-4" />
 
             <div className="space-y-1">

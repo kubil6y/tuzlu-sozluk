@@ -133,6 +133,9 @@ export const getPostBySlug = _cache(
                         createdAt: true,
                         user: true,
                     },
+                    orderBy: {
+                        createdAt: "desc",
+                    }
                 },
                 createdAt: true,
             },

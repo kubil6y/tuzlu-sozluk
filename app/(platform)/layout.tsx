@@ -14,7 +14,7 @@ export default async function MainLayout({
                 <TopNav />
                 <div className="flex">
                     <SideNav />
-                    <main className="flex-grow w-full p-4">{children}</main>
+                    <main className="flex-grow w-full md:px-4">{children}</main>
                 </div>
             </div>
         </>

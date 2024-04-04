@@ -64,7 +64,7 @@ export const SearchBar = () => {
     }, [debouncedValue]);
 
     return (
-        <div className="w-[30%] relative" ref={clickAwayRef}>
+        <div className="relative w-full h-full" ref={clickAwayRef}>
             <div className="relative h-10 w-full">
                 <Input
                     onClick={() => {
