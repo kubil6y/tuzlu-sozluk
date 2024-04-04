@@ -29,7 +29,6 @@ export const createComment = action(
             },
         });
 
-        // TODO check
         revalidatePath("/(platform)/layout");
         revalidatePath(`/(platform)/posts/${slug}`);
     }

@@ -7,6 +7,7 @@ import { getUserByEmail } from "./data/user";
 import { loginSchema } from "./schemas/user";
 
 export const authConfig = {
+    trustHost: true, // TODO remove this
     providers: [
         GitHub,
         Credentials({

@@ -34,7 +34,7 @@ export const FormWrapper = ({
                 >
                     TUZLU
                     <span>
-                        <Icons.logo className="size-10 mx-2" />
+                        <Icons.logo className="size-10 mx-2 fill-fuchsia-600" />
                     </span>
                     SOZLUK
                 </Link>

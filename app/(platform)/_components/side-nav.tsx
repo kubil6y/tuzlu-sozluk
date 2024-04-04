@@ -5,7 +5,7 @@ export async function SideNav() {
     const posts = await getPostsSummary();
     return (
         <div className="hidden md:flex flex-col border-r">
-            <h2 className="font-semibold text-lg text-start px-4 mt-2">
+            <h2 className="font-semibold text-lg text-start mt-2">
                 #Popular
             </h2>
             <div className=" overflow-y-auto">

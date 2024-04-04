@@ -27,12 +27,14 @@ export async function TopNav() {
                     </div>
                 ) : (
                     <div className="flex items-center space-x-2">
-                        <Button variant="outline" asChild>
-                            <Link href="/login">login</Link>
-                        </Button>
-                        <Button variant="outline" asChild>
-                            <Link href="/register">register</Link>
-                        </Button>
+                        <div className="hidden md:flex items-center space-x-2 ">
+                            <Button variant="outline" asChild>
+                                <Link href="/login">login</Link>
+                            </Button>
+                            <Button variant="outline" asChild>
+                                <Link href="/register">register</Link>
+                            </Button>
+                        </div>
                         <ThemeToggle />
                     </div>
                 )}
@@ -42,9 +44,16 @@ export async function TopNav() {
                 <SearchBar />
             </div>
 
-            {/*
-              *<ChannelsNav />
-              */}
+            <div className="flex md:hidden items-center space-x-4 mb-2">
+                <Button variant="outline" asChild className="w-full">
+                    <Link href="/login">login</Link>
+                </Button>
+                <Button variant="outline" asChild className="w-full">
+                    <Link href="/register">register</Link>
+                </Button>
+            </div>
+
+            <ChannelsNav />
             <Separator />
         </div>
     );

@@ -71,7 +71,10 @@ export const PostCard = ({
                 <h3>{title}</h3>
             </Link>
             <div
-                className={cn("mt-2 md:mt-4 lowercase", isTruncated && "line-clamp-4")}
+                className={cn(
+                    "mt-2 md:mt-4 lowercase",
+                    isTruncated && "line-clamp-4"
+                )}
             >
                 {body}
             </div>
@@ -84,6 +87,19 @@ export const PostCard = ({
                     Read more...
                 </Button>
             )}
+
+            <div className="flex md:hidden space-x-4 my-2">
+                <Link
+                    href={`/users/${authorName}`}
+                    className="text-xs text-primary hover:underline"
+                >
+                    {authorName.toLowerCase()}
+                </Link>
+                <p className="text-xs text-foreground/80">
+                    {format(createdAt, "dd.MM.yyyy hh:mm")}
+                </p>
+
+            </div>
 
             <div className="flex items-center justify-between mt-4">
                 <div className="flex items-center space-x-6">
@@ -98,7 +114,7 @@ export const PostCard = ({
                 </div>
 
                 <div className="flex items-center justify-between space-x-4">
-                    <div className="flex items-end flex-col justify-center">
+                    <div className="hidden md:flex items-end flex-col justify-center">
                         <Link
                             href={`/users/${authorName}`}
                             className="text-xs text-primary hover:underline"
