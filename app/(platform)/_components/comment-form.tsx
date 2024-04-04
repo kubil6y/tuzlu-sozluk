@@ -23,6 +23,7 @@ import { useAction } from "next-safe-action/hooks";
 import { Textarea } from "@/components/ui/textarea";
 import { createComment } from "../_actions/comment";
 import { CommentSchema, commentSchema } from "@/schemas/comment";
+import { useRouter } from "next/navigation";
 
 type CommentFormProps = {
     postId: string;

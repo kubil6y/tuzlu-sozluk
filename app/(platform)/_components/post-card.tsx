@@ -26,6 +26,8 @@ import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
+import { BASE_URL } from "@/lib/constants";
+import { getPostsSummary } from "@/data/posts";
 
 type SlimComment = Pick<Comment, "id" | "body" | "createdAt">;
 
@@ -61,9 +63,12 @@ export const PostCard = ({
         return null;
     }
 
-
     return (
         <div className="p-4">
+            <Button onClick={async () => {
+                const summary = await getPostsSummary();
+                console.log({summary});
+            }}>laksjf</Button>
             <Link
                 href={`/posts/${slug}`}
                 className="hover:underline text-xl font-semibold lowercase"
@@ -119,7 +124,7 @@ export const PostCard = ({
 export function PostCardSkeleton() {
     return (
         <div className="p-4">
-            <Skeleton className="h-6 w-[50%] mb-4"/>
+            <Skeleton className="h-6 w-[50%] mb-4" />
 
             <div className="space-y-1">
                 <Skeleton className="h-4 w-full" />
@@ -129,16 +134,16 @@ export function PostCardSkeleton() {
 
             <div className="flex items-center justify-between mt-3">
                 <div className="flex items-center space-x-6">
-                    <Skeleton className="size-8 rounded-lg"/>
-                    <Skeleton className="size-8 rounded-lg"/>
-                    <Skeleton className="size-8 rounded-lg"/>
+                    <Skeleton className="size-8 rounded-lg" />
+                    <Skeleton className="size-8 rounded-lg" />
+                    <Skeleton className="size-8 rounded-lg" />
                 </div>
                 <div className="flex items-center justify-end space-x-1">
                     <div className="flex flex-col items-end space-y-1">
-                        <Skeleton className="w-12 h-2"/>
-                        <Skeleton className="w-24 h-2"/>
+                        <Skeleton className="w-12 h-2" />
+                        <Skeleton className="w-24 h-2" />
                     </div>
-                    <Skeleton className="size-5 rounded"/>
+                    <Skeleton className="size-5 rounded" />
                 </div>
             </div>
         </div>
@@ -245,7 +250,7 @@ function MoreOptions({ slug }: MoreOptionsProps) {
                     <DropdownMenuItem
                         onClick={() => {
                             navigator.clipboard.writeText(
-                                window.location.origin + `/posts/${slug}`
+                                BASE_URL + `/posts/${slug}`
                             );
                         }}
                     >

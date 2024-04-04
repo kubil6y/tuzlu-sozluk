@@ -1,3 +1,5 @@
+"use server";
+
 import { _cache } from "@/lib/cache";
 import { db } from "@/lib/db";
 
@@ -70,7 +72,7 @@ export const getUserPosts = _cache(
         const takePost = take ?? 10;
         const skip = page ? (page - 1) * takePost : 0;
         const [postCount, posts] = await db.$transaction([
-            db.post.count({ where: { user: { username }} }),
+            db.post.count({ where: { user: { username } } }),
             db.post.findMany({
                 select: {
                     id: true,
@@ -82,7 +84,7 @@ export const getUserPosts = _cache(
                     votes: true,
                     comments: true,
                 },
-                where: { user: { username }},
+                where: { user: { username } },
                 take: takePost,
                 skip,
                 orderBy: {
@@ -95,22 +97,38 @@ export const getUserPosts = _cache(
     ["/", "getUserPosts"]
 );
 
-export const getPostsSummary = _cache(() => {
-    return db.post.findMany({
-        select: {
-            id: true,
-            slug: true,
-            title: true,
-            comments: {
-                select: { id: true },
-            },
-        },
-        take: 25,
-        orderBy: {
-            createdAt: "desc",
-        }
-    });
-}, ["/", "getPostsSummary"]);
+export const getPostsSummary = _cache(
+    async (page?: number, take?: number) => {
+        page = page ?? 1;
+        take = take ?? 10;
+        const skip = (page - 1) * take;
+
+        const [postCount, postSummary] = await db.$transaction([
+            db.post.count(),
+            db.post.findMany({
+                select: {
+                    id: true,
+                    slug: true,
+                    title: true,
+                    comments: {
+                        select: { id: true },
+                    },
+                },
+                take,
+                skip,
+                orderBy: {
+                    createdAt: "desc",
+                },
+            }),
+        ]);
+        const totalPages = Math.ceil(postCount / take);
+        return {
+            totalPages,
+            postSummary,
+        };
+    },
+    ["/", "getPostsSummary"]
+);
 
 export const getPostBySlug = _cache(
     (slug: string) => {
