@@ -27,7 +27,6 @@ import { format } from "date-fns";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
 import { BASE_URL } from "@/lib/constants";
-import { getPostsSummary } from "@/data/posts";
 
 type SlimComment = Pick<Comment, "id" | "body" | "createdAt">;
 
@@ -65,10 +64,6 @@ export const PostCard = ({
 
     return (
         <div className="p-4">
-            <Button onClick={async () => {
-                const summary = await getPostsSummary();
-                console.log({summary});
-            }}>laksjf</Button>
             <Link
                 href={`/posts/${slug}`}
                 className="hover:underline text-xl font-semibold lowercase"

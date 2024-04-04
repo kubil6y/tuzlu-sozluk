@@ -97,38 +97,24 @@ export const getUserPosts = _cache(
     ["/", "getUserPosts"]
 );
 
-export const getPostsSummary = _cache(
-    async (page?: number, take?: number) => {
-        page = page ?? 1;
-        take = take ?? 10;
-        const skip = (page - 1) * take;
-
-        const [postCount, postSummary] = await db.$transaction([
-            db.post.count(),
-            db.post.findMany({
-                select: {
-                    id: true,
-                    slug: true,
-                    title: true,
-                    comments: {
-                        select: { id: true },
-                    },
-                },
-                take,
-                skip,
-                orderBy: {
-                    createdAt: "desc",
-                },
-            }),
-        ]);
-        const totalPages = Math.ceil(postCount / take);
-        return {
-            totalPages,
-            postSummary,
-        };
-    },
-    ["/", "getPostsSummary"]
-);
+export const getPostsSummary = _cache(() => {
+    return db.post.findMany({
+        select: {
+            id: true,
+            slug: true,
+            title: true,
+            comments: {
+                select: { id: true },
+            },
+        },
+        take: 20,
+        orderBy: {
+            comments: {
+                _count: "desc",
+            },
+        },
+    });
+}, ["/", "getPostsSummary"]);
 
 export const getPostBySlug = _cache(
     (slug: string) => {

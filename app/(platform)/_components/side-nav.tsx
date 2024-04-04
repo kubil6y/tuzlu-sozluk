@@ -1,12 +1,23 @@
 import { getPostsSummary } from "@/data/posts";
-import { _cache } from "@/lib/cache";
-import { SideNavPostList } from "./side-nav-post-list";
+import { SideNavItem } from "./side-nav-item";
 
 export async function SideNav() {
-    const { totalPages, postSummary } = await getPostsSummary();
+    const posts = await getPostsSummary();
     return (
-        <div className="hidden md:block p-2 overflow-y-auto">
-            <SideNavPostList serverPosts={postSummary} serverTotalPages={totalPages} />
+        <div className="hidden md:flex flex-col border-r">
+            <h2 className="font-semibold text-lg text-start px-4 mt-2">
+                #Popular
+            </h2>
+            <div className=" overflow-y-auto">
+                {posts.map((post) => (
+                    <SideNavItem
+                        key={post.id}
+                        title={post.title}
+                        slug={post.slug}
+                        commentAmount={post.comments.length}
+                    />
+                ))}
+            </div>
         </div>
     );
 }
