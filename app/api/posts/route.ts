@@ -19,10 +19,10 @@ export async function GET(req: NextRequest) {
                 mode: "insensitive",
             },
         },
-        take: 10,
+        take: 5,
         orderBy: {
             createdAt: "desc",
-        }
+        },
     });
     return NextResponse.json(posts);
 }

@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { titleFont } from "./fonts";
 import { cn } from "@/lib/utils";
-import { LogoIcon } from "./logo-icon";
 import { Icons } from "./icons";
 
 export const Logo = () => {

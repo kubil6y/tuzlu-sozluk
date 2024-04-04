@@ -13,8 +13,9 @@ export async function TopNav() {
     const session = await auth();
     return (
         <div>
-            <div className="flex items-center justify-between mt-2">
+            <div className="flex items-center justify-between my-4">
                 <Logo />
+
                 <SearchBar />
 
                 {session?.user ? (
@@ -34,6 +35,7 @@ export async function TopNav() {
                     </div>
                 )}
             </div>
+
             <ChannelsNav />
             <Separator />
         </div>
