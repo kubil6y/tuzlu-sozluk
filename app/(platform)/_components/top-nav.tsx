@@ -13,10 +13,10 @@ export async function TopNav() {
     const session = await auth();
     return (
         <div>
-            <div className="flex items-center justify-between my-4">
+            <div className="my-4 flex items-center justify-between">
                 <Logo />
 
-                <div className="hidden md:block w-full md:w-[40%] ">
+                <div className="hidden w-full md:block md:w-[40%] ">
                     <SearchBar />
                 </div>
 
@@ -27,7 +27,7 @@ export async function TopNav() {
                     </div>
                 ) : (
                     <div className="flex items-center space-x-2">
-                        <div className="hidden md:flex items-center space-x-2 ">
+                        <div className="hidden items-center space-x-2 md:flex ">
                             <Button variant="outline" asChild>
                                 <Link href="/login">login</Link>
                             </Button>
@@ -40,11 +40,11 @@ export async function TopNav() {
                 )}
             </div>
 
-            <div className="block md:hidden mb-4">
+            <div className="mb-4 block md:hidden">
                 <SearchBar />
             </div>
 
-            <div className="flex md:hidden items-center space-x-4 mb-2">
+            <div className="mb-2 flex items-center space-x-4 md:hidden">
                 <Button variant="outline" asChild className="w-full">
                     <Link href="/login">login</Link>
                 </Button>

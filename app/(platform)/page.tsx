@@ -10,7 +10,7 @@ export default async function Home({
     const take = 10;
     return (
         <>
-            <PostListWithSuspense fetcher={getPosts} take={take} page={page} />
+            <PostListWithSuspense fetcher={getPosts} take={take} page={page} key="home/posts"/>
         </>
     );
 }
