@@ -44,14 +44,16 @@ export async function TopNav() {
                 <SearchBar />
             </div>
 
-            <div className="mb-2 flex items-center space-x-4 md:hidden">
-                <Button variant="outline" asChild className="w-full">
-                    <Link href="/login">login</Link>
-                </Button>
-                <Button variant="outline" asChild className="w-full">
-                    <Link href="/register">register</Link>
-                </Button>
-            </div>
+            {!session?.user && (
+                <div className="mb-2 flex items-center space-x-4 md:hidden">
+                    <Button variant="outline" asChild className="w-full">
+                        <Link href="/login">login</Link>
+                    </Button>
+                    <Button variant="outline" asChild className="w-full">
+                        <Link href="/register">register</Link>
+                    </Button>
+                </div>
+            )}
 
             <ChannelsNav />
             <Separator />
