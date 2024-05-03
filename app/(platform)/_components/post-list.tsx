@@ -28,7 +28,9 @@ async function PostList({ page, take, fetcher }: PostListProps) {
     const { postCount, posts } = await fetcher(page, take);
     const totalPages = Math.ceil(postCount / 10);
     if (!posts || posts?.length === 0) {
-        return <p>no posts found</p>;
+        return <div className="flex items-center justify-center text-lg p-8">
+            No posts found :(
+        </div>;
     }
     return (
         <>

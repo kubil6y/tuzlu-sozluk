@@ -12,7 +12,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 export async function TopNav() {
     const session = await auth();
     return (
-        <div>
+        <div className="">
             <div className="my-4 flex items-center justify-between">
                 <Logo />
 

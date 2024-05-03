@@ -4,11 +4,11 @@ import { SideNavItem } from "./side-nav-item";
 export async function SideNav() {
     const posts = await getPostsSummary();
     return (
-        <div className="hidden md:flex flex-col border-r">
-            <h2 className="font-semibold text-lg text-start mt-2">
+        <div className="hidden min-h-[calc(100vh-120px)] flex-col border-r md:flex md:pt-2">
+            <h2 className="ml-4 mt-2 text-start text-lg font-semibold">
                 #Popular
             </h2>
-            <div className=" overflow-y-auto">
+            <div className="overflow-y-auto">
                 {posts.map((post) => (
                     <SideNavItem
                         key={post.id}

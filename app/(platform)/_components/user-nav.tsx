@@ -13,7 +13,7 @@ import {
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import { useMounted } from "@/hooks/use-mounted";
@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { LogOut, MoonIcon, SunIcon, UserIcon } from "lucide-react";
 
 export function UserNav() {
+    const session = useSession();
     const mounted = useMounted();
     const { theme, setTheme } = useTheme();
     const router = useRouter();
@@ -40,12 +41,14 @@ export function UserNav() {
             <DropdownMenuContent className="w-56">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                    <DropdownMenuItem onClick={() => router.push("/profile")}>
-                        <UserIcon className="mr-2 h-4 w-4" />
-                        <span>Profile</span>
-                    </DropdownMenuItem>
-                </DropdownMenuGroup>
+                {session?.data?.user?.username && (
+                    <DropdownMenuGroup>
+                        <DropdownMenuItem onClick={() => router.push(`/users/${session.data.user.username}`)}>
+                            <UserIcon className="mr-2 h-4 w-4" />
+                            <span>Profile</span>
+                        </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                )}
                 <DropdownMenuGroup>
                     <DropdownMenuSub>
                         <DropdownMenuSubTrigger>

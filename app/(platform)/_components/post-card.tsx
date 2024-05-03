@@ -63,7 +63,7 @@ export const PostCard = ({
     }
 
     return (
-        <div className="p-2 md:px-4">
+        <div className="p-2 md:p-4">
             <Link
                 href={`/posts/${slug}`}
                 className="hover:underline text-xl font-semibold lowercase"
